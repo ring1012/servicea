@@ -1,5 +1,8 @@
-FROM 10.216.70.22:7443/common/java-font:8-jre-alpine
+FROM harbor.szanba.ren/common/openjdk:8-jre-alpine
 
+ARG profile
+ENV profile=$profile
 ADD servera/target/servera.jar /servera.jar
 
-ENTRYPOINT ["java", "-jar", "/servera.jar"]
+ENTRYPOINT ["java", "-jar", "/servera.jar", "--spring.profiles.active=${profile}"]
+

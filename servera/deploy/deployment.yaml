@@ -30,11 +30,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: servera
+  name: servera-external
   namespace: bigdata-demo
   labels:
-    app: servera
-    service: servera
+    app: servera-external
+    service: servera-external
 spec:
   ports:
     - port: 80
@@ -42,4 +42,5 @@ spec:
       name: http
   selector:
     app: servera
-
+  type: LoadBalancer
+  loadBalancerIP: ${static_ip}

@@ -1,0 +1,13 @@
+server:
+  servlet:
+    context-path: /servera
+
+
+management:
+  endpoint:
+    restart:
+      enabled: true
+    health:
+      enabled: true
+    info:
+      enabled: true

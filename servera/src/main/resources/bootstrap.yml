@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: local
+
+---
+greeting:
+  message: hi local
+spring:
+  profiles: local
+
+---
+spring:
+  profiles: dev
+  application:
+    name: springcloudk8sreloadconfigdemo
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
+        mode: polling
+        period: 500
+      config:
+        sources:
+          - name: ${spring.application.name}
+            namespace: bigdata-demo

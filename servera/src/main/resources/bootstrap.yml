@@ -8,6 +8,32 @@ greeting:
 spring:
   profiles: local
 
+  datasource:
+    url: jdbc:mysql://10.216.70.23:3306/dmp_data_warehouse_dev?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&connectTimeout=30000&socketTimeout=30000&useSSL=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    filters: log4j
+    maxActive: 200
+    initialSize: 5
+    maxWait: 10000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+logging:
+  level:
+    servicea.server.mapper: INFO
+
 ---
 spring:
   profiles: dev

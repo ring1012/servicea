@@ -2,6 +2,8 @@ server:
   servlet:
     context-path: /servera
 
+  tomcat:
+    uri-encoding: UTF-8
 
 management:
   endpoint:

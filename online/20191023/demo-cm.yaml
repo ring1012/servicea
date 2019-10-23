@@ -1,0 +1,91 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: springcloudk8sreloadconfigdemo
+  namespace: bigdata-demo
+
+data:
+  application.yml: |-
+    greeting:
+      message: Say Hello to the World
+    farewell:
+      message: Say Goodbye
+    ---
+    spring:
+      profiles: dev
+
+      datasource:
+        url: jdbc:mysql://10.216.70.23:3306/dmp_data_warehouse_dev?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&connectTimeout=30000&socketTimeout=30000&useSSL=true
+        username: root
+        password: 22222
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        filters: log4j
+        maxActive: 200
+        initialSize: 5
+        maxWait: 10000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+    mybatis:
+      mapper-locations: classpath:mapping/*.xml
+    logging:
+      level:
+        servicea.server.mapper: INFO
+
+        #文件路径需要自己创建
+        server:
+          tomcat:
+            uri-encoding: UTF-8
+        spring:
+
+          datasource:
+            druid:
+              master:
+                name: dmp_sql_visualization
+                jdbcUrl: jdbc:mysql://10.216.70.23:3306/dmp_data_warehouse_dev?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8&connectTimeout=30000&socketTimeout=30000&useSSL=true
+                username: root
+                password: 123456
+                driver-class-name: com.mysql.cj.jdbc.Driver
+                filters: log4j
+                maxActive: 200
+                initialSize: 5
+                maxWait: 10000
+                minIdle: 1
+                timeBetweenEvictionRunsMillis: 60000
+                minEvictableIdleTimeMillis: 300000
+                validationQuery: select 'x'
+                testWhileIdle: true
+                testOnBorrow: false
+                testOnReturn: false
+                poolPreparedStatements: true
+                maxPoolPreparedStatementPerConnectionSize: 20
+                connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+          devtools:
+            restart: enabled:true exclude:WEB-INF/**
+
+        mapping:
+          mysqlPath: classpath:mapping/*.xml
+          impalaPath: classpath:impala/*.xml
+        mapper:
+          mappers: cn.focusmedia.bigdata.pyramid.galaxy.datasource.base.BaseMapper
+        logging:
+          config: classpath:config/logback-spring-debug.xml
+          # dev/test环境下设为debug方便调试，正式环境下设为info方便查看问题。
+          level:
+            cn.focusmedia.bigdata.pyramid.galaxy.mapper: INFO
+            cn.focusmedia.bigdata.pyramid.galaxy.impala: DEBUG
+
+    ---
+    spring:
+      profiles: production
+    greeting:
+      message: Say Hello to the Ops
